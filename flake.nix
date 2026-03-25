@@ -6,8 +6,6 @@
 
     lanzaboote = {
       url = "github:nix-community/lanzaboote/v1.0.0";
-
-      # Optional but recommended to limit the size of your system closure.
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
@@ -17,37 +15,70 @@
     };
   };
 
-  outputs = { self, nixpkgs, home-manager, lanzaboote, ... }@inputs:
-  {
-    nixosConfigurations.nixos =
-      nixpkgs.lib.nixosSystem {
-        system = "x86_64-linux";
+  outputs = { nixpkgs, home-manager, lanzaboote, ... }:
+    let
+      lib = nixpkgs.lib;
 
-        modules = [
-          ./nixos/configuration.nix
+      mkHost = {
+        name,
+        system ? "x86_64-linux",
+        user ? "paul",
+        fullName ? "Paul",
+        email ? "rauchbach.paul@gmail.com",
+        nixosModules ? [ ],
+        homeModules ? [ ],
+      }:
+        lib.nixosSystem {
+          inherit system;
 
-          home-manager.nixosModules.home-manager 
-          {
-            home-manager.useGlobalPkgs = true;
-            home-manager.useUserPackages = true;
+          specialArgs = {
+            inherit user fullName email;
+            hostname = name;
+          };
 
-            home-manager.users.paul = import ./home/home.nix;
-          }
-          lanzaboote.nixosModules.lanzaboote
+          modules =
+            [
+              (./hosts + "/${name}/default.nix")
 
-          ({ pkgs, lib, ... }: {
-            # Lanzaboote currently replaces the systemd-boot module.
-            # This setting is usually set to true in configuration.nix
-            # generated at installation time. So we force it to false
-            # for now.
-            boot.loader.systemd-boot.enable = lib.mkForce false;
+              home-manager.nixosModules.home-manager
+              {
+                home-manager.useGlobalPkgs = true;
+                home-manager.useUserPackages = true;
+                home-manager.extraSpecialArgs = {
+                  inherit user fullName email;
+                  hostname = name;
+                };
+                home-manager.users.${user} = {
+                  imports = [
+                    ./home/common.nix
+                    ./home/dev.nix
+                  ] ++ homeModules;
+                };
+              }
+            ]
+            ++ nixosModules;
+        };
+    in
+    {
+      nixosConfigurations = {
+        nixos = mkHost {
+          name = "nixos";
+          nixosModules = [
+            lanzaboote.nixosModules.lanzaboote
+            ./modules/nixos/security/lanzaboote.nix
+          ];
+          homeModules = [
+            ./home/desktops/gnome.nix
+            ./home/hosts/nixos/monitors.nix
+            ./home/profiles/desktop.nix
+          ];
+        };
 
-            boot.lanzaboote = {
-              enable = true;
-              pkiBundle = "/var/lib/sbctl";
-            };
-          })
-        ];
+        # Enable this after generating `hosts/laptop/hardware-configuration.nix`.
+        # laptop = mkHost {
+        #   name = "laptop";
+        #   homeModules = [ ./home/profiles/laptop.nix ];
+        # };
       };
-  };
+    };
 }
