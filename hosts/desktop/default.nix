@@ -11,6 +11,8 @@
   #   sudo nixos-rebuild boot --flake path:.#desktop
   #   nix flake show path:.
   #   nixos-option lanzaboote.enable
+  #   nixos-option gnome.enable
+  #   journalctl -b -u display-manager
 
   networking.hostName = hostname;
   networking.networkmanager.enable = true;
@@ -26,10 +28,13 @@
     extraGroups = [ "wheel" "networkmanager" ];
   };
 
+  gnome.enable = true;
   lanzaboote.enable = true;
+  nvidia.enable = true;
 
   home-manager.users.${username} = {
     git.enable = true;
+    omakub.enable = true;
     vscode.enable = true;
     firefox.enable = true;
   };

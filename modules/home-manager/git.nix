@@ -11,10 +11,9 @@ in
   config = lib.mkIf cfg.enable {
     programs.git = {
       enable = true;
-      userName = fullName;
-      userEmail = email;
-
-      extraConfig = {
+      settings = {
+        user.name = fullName;
+        user.email = email;
         init.defaultBranch = "main";
         pull.rebase = false;
       };
