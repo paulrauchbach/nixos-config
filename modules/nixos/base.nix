@@ -1,6 +1,11 @@
 { pkgs, ... }:
 
 {
+  imports = [
+    ./maintenance/auto-upgrade.nix
+    ./programs/nix-ld.nix
+  ];
+
   networking.networkmanager.enable = true;
 
   time.timeZone = "Europe/Berlin";

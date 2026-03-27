@@ -2,7 +2,7 @@
 
 {
   home.packages = with pkgs; [
-    spotify
-    steam
+    spotify-player
+    mumble
   ];
 }

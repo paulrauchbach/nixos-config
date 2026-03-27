@@ -40,6 +40,7 @@ Its config is assembled from:
 
 - `hosts/nixos/default.nix`
 - `modules/nixos/base.nix`
+- `modules/nixos/maintenance/auto-upgrade.nix`
 - `modules/nixos/desktops/gnome.nix`
 - `modules/nixos/hardware/nvidia.nix`
 - `modules/nixos/security/lanzaboote.nix`
@@ -61,6 +62,21 @@ Or run directly:
 - `sudo nixos-rebuild switch --flake 'path:/home/paul/nixos-config#nixos'`
 
 The `path:` prefix is intentional. It makes rebuilds work even when there are uncommitted files in the repo.
+
+## Automatic Upgrades
+
+Automatic system upgrades are enabled for all hosts through `modules/nixos/maintenance/auto-upgrade.nix`.
+
+- Each machine upgrades from `github:paulrauchbach/nixos-config#<hostname>`.
+- This means a host will follow the config committed and pushed to GitHub for its matching host entry.
+- Upgrades run daily with a randomized delay.
+- Garbage collection runs weekly to clean up old generations.
+
+Useful commands:
+
+- `systemctl list-timers nixos-upgrade.timer`
+- `systemctl status nixos-upgrade.service`
+- `journalctl -u nixos-upgrade.service`
 
 ## Adding a Laptop
 

@@ -1,6 +1,10 @@
 { pkgs, user, fullName, email, hostname, ... }:
 
 {
+  imports = [
+    ./programs/firefox.nix
+  ];
+
   home.username = user;
   home.homeDirectory = "/home/${user}";
   home.stateVersion = "25.11";
@@ -47,30 +51,5 @@
     };
   };
 
-  programs.firefox = {
-    enable = true;
-    profiles.default = {
-      id = 0;
-      name = "default";
-      isDefault = true;
-      search.default = "ddg";
-      search.force = true;
-      settings = {
-        "browser.startup.page" = 3;
-        "browser.sessionstore.resume_from_crash" = true;
-        "sidebar.verticalTabs" = true;
-        "sidebar.verticalTabs.dragToPinPromo.dismissed" = true;
-        "browser.translations.neverTranslateLanguages" = "de,en";
-        "browser.tabs.warnOnClose" = false;
-        "signon.rememberSignons" = false;
-        "extensions.formautofill.addresses.enabled" = false;
-        "extensions.formautofill.creditCards.enabled" = false;
-        "extensions.formautofill.available" = "off";
-      };
-    };
 
-    policies = {
-      DisableTelemetry = true;
-    };
-  };
 }
