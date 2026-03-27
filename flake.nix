@@ -1,84 +1,71 @@
 {
-  description = "NixOS config";
+  description = "Beginner-friendly NixOS config";
 
+  # Inputs are the external projects this flake depends on.
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-25.11";
-
-    lanzaboote = {
-      url = "github:nix-community/lanzaboote/v1.0.0";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
 
     home-manager = {
       url = "github:nix-community/home-manager/release-25.11";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    lanzaboote = {
+      url = "github:nix-community/lanzaboote/v1.0.0";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
+  # Outputs are what this flake provides.
   outputs = { nixpkgs, home-manager, lanzaboote, ... }:
     let
       lib = nixpkgs.lib;
+      system = "x86_64-linux";
 
-      mkHost = {
-        name,
-        system ? "x86_64-linux",
-        user ? "paul",
-        fullName ? "Paul",
-        email ? "rauchbach.paul@gmail.com",
-        nixosModules ? [ ],
-        homeModules ? [ ],
-      }:
+      # Personal details used by both NixOS and Home Manager.
+      username = "paul";
+      fullName = "Paul";
+      email = "rauchbach.paul@gmail.com";
+
+      # Home Manager settings shared by every host.
+      homeManagerModule = {
+        home-manager.useGlobalPkgs = true;
+        home-manager.useUserPackages = true;
+        home-manager.extraSpecialArgs = {
+          inherit username fullName email;
+        };
+
+        home-manager.users.${username} = {
+          imports = [ ./modules/home-manager ];
+
+          home.username = username;
+          home.homeDirectory = "/home/${username}";
+          home.stateVersion = "25.11";
+
+          programs.home-manager.enable = true;
+        };
+      };
+
+      # Helper for creating a host from ./hosts/<name>.
+      mkHost = hostname:
         lib.nixosSystem {
           inherit system;
 
           specialArgs = {
-            inherit user fullName email;
-            hostname = name;
+            inherit username fullName email hostname;
           };
 
-          modules =
-            [
-              (./hosts + "/${name}/default.nix")
-
-              home-manager.nixosModules.home-manager
-              {
-                home-manager.useGlobalPkgs = true;
-                home-manager.useUserPackages = true;
-                home-manager.extraSpecialArgs = {
-                  inherit user fullName email;
-                  hostname = name;
-                };
-                home-manager.users.${user} = {
-                  imports = [
-                    ./home/common.nix
-                    ./home/dev.nix
-                  ] ++ homeModules;
-                };
-              }
-            ]
-            ++ nixosModules;
+          modules = [
+            (./hosts + "/${hostname}")
+            home-manager.nixosModules.home-manager
+            lanzaboote.nixosModules.lanzaboote
+            homeManagerModule
+          ];
         };
     in
     {
       nixosConfigurations = {
-        nixos = mkHost {
-          name = "nixos";
-          nixosModules = [
-            lanzaboote.nixosModules.lanzaboote
-            ./modules/nixos/security/lanzaboote.nix
-          ];
-          homeModules = [
-            ./home/desktops/gnome.nix
-            ./home/hosts/nixos/monitors.nix
-            ./home/profiles/desktop.nix
-          ];
-        };
-
-        # Enable this after generating `hosts/laptop/hardware-configuration.nix`.
-        # laptop = mkHost {
-        #   name = "laptop";
-        #   homeModules = [ ./home/profiles/laptop.nix ];
-        # };
+        desktop = mkHost "desktop";
       };
     };
 }
