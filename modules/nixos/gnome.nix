@@ -36,10 +36,14 @@ in
       pkgs.gnome-tweaks
       pkgs.gnome-extension-manager
       pkgs.gnomeExtensions.appindicator
+      pkgs.gnomeExtensions.blur-my-shell
       pkgs.gnomeExtensions.dash-to-dock
       pkgs.gnomeExtensions.just-perfection
+      pkgs.gnomeExtensions.space-bar
       pkgs.gnomeExtensions.tactile
+      pkgs.gnomeExtensions.undecorate
       pkgs.gnomeExtensions.user-themes
+      pkgs.yaru-theme
     ];
   };
 }

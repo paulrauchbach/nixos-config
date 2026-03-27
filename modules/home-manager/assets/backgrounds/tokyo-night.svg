@@ -1,0 +1,66 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 1080">
+  <defs>
+    <linearGradient id="sky" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#090b16"/>
+      <stop offset="45%" stop-color="#141b34"/>
+      <stop offset="100%" stop-color="#24143a"/>
+    </linearGradient>
+    <linearGradient id="moonGlow" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#ffd6a5" stop-opacity="0.9"/>
+      <stop offset="100%" stop-color="#f7768e" stop-opacity="0.1"/>
+    </linearGradient>
+    <linearGradient id="water" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#14203d"/>
+      <stop offset="100%" stop-color="#0a1022"/>
+    </linearGradient>
+    <linearGradient id="towerGlow" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#7aa2f7"/>
+      <stop offset="100%" stop-color="#2ac3de"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="1920" height="1080" fill="url(#sky)"/>
+
+  <g opacity="0.8">
+    <circle cx="1460" cy="230" r="105" fill="#ffc777"/>
+    <circle cx="1460" cy="230" r="170" fill="url(#moonGlow)"/>
+  </g>
+
+  <g fill="#c0caf5">
+    <circle cx="210" cy="132" r="2.2"/>
+    <circle cx="340" cy="84" r="1.7"/>
+    <circle cx="502" cy="156" r="1.9"/>
+    <circle cx="722" cy="120" r="2.3"/>
+    <circle cx="844" cy="178" r="1.6"/>
+    <circle cx="1012" cy="96" r="1.8"/>
+    <circle cx="1198" cy="142" r="2.1"/>
+    <circle cx="1318" cy="90" r="1.5"/>
+    <circle cx="1598" cy="118" r="2"/>
+    <circle cx="1738" cy="154" r="1.8"/>
+  </g>
+
+  <path d="M0 620 L160 590 L330 612 L560 520 L760 548 L960 470 L1160 520 L1370 455 L1600 520 L1920 468 V1080 H0 Z" fill="#10172b"/>
+  <path d="M0 700 L220 652 L430 690 L650 596 L860 650 L1020 605 L1210 655 L1450 588 L1710 648 L1920 615 V1080 H0 Z" fill="#161d35"/>
+
+  <rect y="700" width="1920" height="380" fill="url(#water)"/>
+  <g opacity="0.23" stroke="#7aa2f7" stroke-width="2">
+    <path d="M0 770 C160 754 260 790 400 774 C560 756 660 800 820 780 C1000 758 1110 798 1310 776 C1490 756 1600 794 1920 770"/>
+    <path d="M0 834 C180 816 260 846 420 830 C570 814 720 852 890 838 C1080 822 1170 854 1330 838 C1500 822 1660 854 1920 834"/>
+    <path d="M0 904 C140 890 320 918 520 900 C720 884 860 924 1060 904 C1230 888 1390 920 1590 904 C1730 892 1810 908 1920 900"/>
+  </g>
+
+  <g fill="#0b1020">
+    <path d="M70 700 h110 v-180 h26 v180 h92 v-250 h28 v250 h90 v-145 h30 v145 h80 v380 h-456z"/>
+    <path d="M520 700 h120 v-220 h28 v220 h94 v-300 h30 v300 h82 v-170 h30 v170 h116 v380 h-500z"/>
+    <path d="M1120 700 h114 v-210 h28 v210 h68 v-320 h34 v320 h100 v-160 h26 v160 h112 v380 h-482z"/>
+  </g>
+
+  <g opacity="0.95" fill="url(#towerGlow)">
+    <rect x="118" y="560" width="8" height="140"/>
+    <rect x="150" y="540" width="8" height="160"/>
+    <rect x="590" y="500" width="8" height="200"/>
+    <rect x="636" y="514" width="8" height="186"/>
+    <rect x="1260" y="516" width="8" height="184"/>
+    <rect x="1324" y="420" width="10" height="280"/>
+  </g>
+</svg>

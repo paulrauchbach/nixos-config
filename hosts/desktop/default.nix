@@ -12,6 +12,7 @@
   #   nix flake show path:.
   #   nixos-option lanzaboote.enable
   #   nixos-option gnome.enable
+  #   journalctl -b | grep -i -E 'nvidia|xrandr|modeset'
   #   journalctl -b -u display-manager
 
   networking.hostName = hostname;
@@ -35,6 +36,7 @@
   home-manager.users.${username} = {
     git.enable = true;
     omakub.enable = true;
+    omakub.theme = "tokyo-night";
     vscode.enable = true;
     firefox.enable = true;
   };
