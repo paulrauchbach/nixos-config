@@ -34,9 +34,8 @@
   nvidia.enable = true;
 
   home-manager.users.${username} = {
+    desktop.theme = "tokyo-night";
     git.enable = true;
-    omakub.enable = true;
-    omakub.theme = "tokyo-night";
     vscode.enable = true;
     firefox.enable = true;
   };
