@@ -5,6 +5,6 @@
     ./git.nix
     ./alacritty.nix
     ./vscode.nix
-    ./firefox.nix
+    ./firefox
   ];
 }
