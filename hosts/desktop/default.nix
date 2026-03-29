@@ -29,12 +29,16 @@
     extraGroups = [ "wheel" "networkmanager" ];
   };
 
+  # system packages
+  desktop.theme = "tokyo-night";
   gnome.enable = true;
   lanzaboote.enable = true;
   nvidia.enable = true;
+  logitechGProKeyboard.enable = true;
+  steam.enable = true;
 
+  # user packages
   home-manager.users.${username} = {
-    desktop.theme = "tokyo-night";
     git.enable = true;
     vscode.enable = true;
     firefox.enable = true;

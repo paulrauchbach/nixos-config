@@ -11,5 +11,7 @@
   "browser.urlbar.suggest.quicksuggest" = false;
   "browser.urlbar.trimHttps" = true;
   "browser.urlbar.unitConversion.enabled" = true;
+  "browser.startup.page" = 3;
+  "browser.translations.neverTranslateLanguages" = [ "de" ];
   "extensions.autoDisableScopes" = 0;
 }

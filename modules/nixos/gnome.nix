@@ -2,9 +2,17 @@
 
 let
   cfg = config.gnome;
+  themePresets = import ../theme-presets.nix;
+  theme = themePresets.${config.desktop.theme};
 in
 {
   options = {
+    desktop.theme = lib.mkOption {
+      type = lib.types.enum (builtins.attrNames themePresets);
+      default = "tokyo-night";
+      description = "Desktop theme preset shared with the GDM greeter.";
+    };
+
     gnome.enable = lib.mkEnableOption "GNOME desktop with GDM";
   };
 
@@ -14,6 +22,33 @@ in
     #   journalctl -b -u display-manager
 
     programs.dconf.enable = true;
+    programs.dconf.profiles.gdm = {
+      enableUserDb = false;
+      databases = [
+        {
+          settings = {
+            "org/gnome/desktop/background" = {
+              picture-uri = "file://${theme.wallpaper}";
+              picture-uri-dark = "file://${theme.wallpaper}";
+              picture-options = "zoom";
+            };
+
+            "org/gnome/desktop/interface" = {
+              color-scheme = "prefer-dark";
+              cursor-theme = "Bibata-Modern-Ice";
+              gtk-theme = theme.gtkTheme;
+              icon-theme = theme.iconTheme;
+            };
+
+            "org/gnome/desktop/screensaver" = {
+              picture-uri = "file://${theme.wallpaper}";
+              picture-uri-dark = "file://${theme.wallpaper}";
+              picture-options = "zoom";
+            };
+          };
+        }
+      ];
+    };
 
     services.xserver.enable = true;
     services.displayManager.gdm.enable = true;
@@ -43,6 +78,7 @@ in
       pkgs.gnomeExtensions.tactile
       pkgs.gnomeExtensions.undecorate
       pkgs.gnomeExtensions.user-themes
+      pkgs.bibata-cursors
       pkgs.yaru-theme
     ];
   };
