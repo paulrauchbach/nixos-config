@@ -5,5 +5,6 @@
     ./nvidia.nix
     ./logitech-gpro-keyboard.nix
     ./steam.nix
+    ./zsh.nix
   ];
 }

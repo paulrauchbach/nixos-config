@@ -28,11 +28,11 @@
       email = "rauchbach.paul@gmail.com";
 
       # Home Manager settings shared by every host.
-      homeManagerModule = {
+      homeManagerModule = hostname: {
         home-manager.useGlobalPkgs = true;
         home-manager.useUserPackages = true;
         home-manager.extraSpecialArgs = {
-          inherit username fullName email;
+          inherit username fullName email hostname;
         };
 
         home-manager.users.${username} = {
@@ -59,7 +59,7 @@
             (./hosts + "/${hostname}")
             home-manager.nixosModules.home-manager
             lanzaboote.nixosModules.lanzaboote
-            homeManagerModule
+            (homeManagerModule hostname)
           ];
         };
     in

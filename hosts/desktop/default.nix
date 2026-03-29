@@ -36,12 +36,14 @@
   nvidia.enable = true;
   logitechGProKeyboard.enable = true;
   steam.enable = true;
+  zsh.enable = true;
 
   # user packages
   home-manager.users.${username} = {
     git.enable = true;
     vscode.enable = true;
     firefox.enable = true;
+    zsh.enable = true;
   };
 
   system.stateVersion = "25.11";
