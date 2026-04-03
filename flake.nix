@@ -10,6 +10,11 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    claudeCode = {
+      url = "github:sadjow/claude-code-nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     lanzaboote = {
       url = "github:nix-community/lanzaboote/v1.0.0";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -17,7 +22,7 @@
   };
 
   # Outputs are what this flake provides.
-  outputs = { nixpkgs, home-manager, lanzaboote, ... }:
+  outputs = { nixpkgs, home-manager, claudeCode, lanzaboote, ... }:
     let
       lib = nixpkgs.lib;
       system = "x86_64-linux";
@@ -59,6 +64,9 @@
             (./hosts + "/${hostname}")
             home-manager.nixosModules.home-manager
             lanzaboote.nixosModules.lanzaboote
+            {
+              nixpkgs.overlays = [ claudeCode.overlays.default ];
+            }
             (homeManagerModule hostname)
           ];
         };

@@ -9,6 +9,7 @@ in
   config = lib.mkIf cfg.enable (lib.mkMerge [
     {
       home.packages = [
+        pkgs."claude-code"
         pkgs.gh
       ];
     }
