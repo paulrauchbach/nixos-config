@@ -23,6 +23,7 @@
 
   # system packages
   desktop.theme = "tokyo-night";
+  dev.enable = true;
   gnome.enable = true;
   lanzaboote.enable = true;
   nvidia.enable = true;
@@ -31,6 +32,7 @@
 
   # user packages
   home-manager.users.${username} = {
+    dev.enable = true;
     git.enable = true;
     vscode.enable = true;
     firefox.enable = true;

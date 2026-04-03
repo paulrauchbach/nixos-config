@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ lib, pkgs, hostname, ... }:
 
 let
   blurMyShellUuid = pkgs.gnomeExtensions.blur-my-shell.extensionUuid;
@@ -15,21 +15,113 @@ in
     pkgs.ulauncher
   ];
 
-  xdg.configFile."ulauncher/settings.json" = {
-    force = true;
-    text = builtins.toJSON {
-      blacklisted-desktop-dirs = "/usr/share/locale:/usr/share/app-install:/usr/share/kservices5:/usr/share/fk5:/usr/share/kservicetypes5:/usr/share/applications/screensavers:/usr/share/kde4:/usr/share/mimelnk";
-      clear-previous-query = true;
-      disable-desktop-filters = false;
-      grab-mouse-pointer = false;
-      hotkey-show-app = "<Primary>space";
-      render-on-screen = "mouse-pointer-monitor";
-      show-indicator-icon = true;
-      show-recent-apps = "0";
-      terminal-command = "";
-      theme-name = "dark";
+  xdg.configFile =
+    {
+      "ulauncher/settings.json" = {
+        force = true;
+        text = builtins.toJSON {
+          blacklisted-desktop-dirs = "/usr/share/locale:/usr/share/app-install:/usr/share/kservices5:/usr/share/fk5:/usr/share/kservicetypes5:/usr/share/applications/screensavers:/usr/share/kde4:/usr/share/mimelnk";
+          clear-previous-query = true;
+          disable-desktop-filters = false;
+          grab-mouse-pointer = false;
+          hotkey-show-app = "<Primary>space";
+          render-on-screen = "mouse-pointer-monitor";
+          show-indicator-icon = true;
+          show-recent-apps = "0";
+          terminal-command = "";
+          theme-name = "dark";
+        };
+      };
+    }
+    // lib.optionalAttrs (hostname == "desktop") {
+      "monitors.xml" = {
+        force = true;
+        text = ''
+          <monitors version="2">
+            <configuration>
+              <layoutmode>physical</layoutmode>
+              <logicalmonitor>
+                <x>1920</x>
+                <y>0</y>
+                <scale>1</scale>
+                <primary>yes</primary>
+                <monitor>
+                  <monitorspec>
+                    <connector>DP-3</connector>
+                    <vendor>DEL</vendor>
+                    <product>DELL S2422HG</product>
+                    <serial>CNR5K83</serial>
+                  </monitorspec>
+                  <mode>
+                    <width>1920</width>
+                    <height>1080</height>
+                    <rate>164.997</rate>
+                  </mode>
+                </monitor>
+              </logicalmonitor>
+              <logicalmonitor>
+                <x>0</x>
+                <y>0</y>
+                <scale>1</scale>
+                <monitor>
+                  <monitorspec>
+                    <connector>DP-4</connector>
+                    <vendor>DEL</vendor>
+                    <product>DELL S2422HG</product>
+                    <serial>J0X6K83</serial>
+                  </monitorspec>
+                  <mode>
+                    <width>1920</width>
+                    <height>1080</height>
+                    <rate>164.997</rate>
+                  </mode>
+                </monitor>
+              </logicalmonitor>
+            </configuration>
+            <configuration>
+              <layoutmode>physical</layoutmode>
+              <logicalmonitor>
+                <x>0</x>
+                <y>0</y>
+                <scale>1</scale>
+                <monitor>
+                  <monitorspec>
+                    <connector>DP-5</connector>
+                    <vendor>DEL</vendor>
+                    <product>DELL S2422HG</product>
+                    <serial>J0X6K83</serial>
+                  </monitorspec>
+                  <mode>
+                    <width>1920</width>
+                    <height>1080</height>
+                    <rate>164.997</rate>
+                  </mode>
+                </monitor>
+              </logicalmonitor>
+              <logicalmonitor>
+                <x>1920</x>
+                <y>0</y>
+                <scale>1</scale>
+                <primary>yes</primary>
+                <monitor>
+                  <monitorspec>
+                    <connector>DP-4</connector>
+                    <vendor>DEL</vendor>
+                    <product>DELL S2422HG</product>
+                    <serial>CNR5K83</serial>
+                  </monitorspec>
+                  <mode>
+                    <width>1920</width>
+                    <height>1080</height>
+                    <rate>164.997</rate>
+                  </mode>
+                </monitor>
+              </logicalmonitor>
+            </configuration>
+          </monitors>
+        '';
+      };
     };
-  };
 
   dconf.settings = {
     "org/gnome/desktop/interface" = {
@@ -45,6 +137,10 @@ in
       edge-tiling = true;
       center-new-windows = true;
       workspaces-only-on-primary = false;
+    };
+
+    "org/gnome/desktop/session" = {
+      idle-delay = lib.hm.gvariant.mkUint32 900;
     };
 
     "org/gnome/desktop/wm/preferences" = {

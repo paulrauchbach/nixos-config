@@ -1,5 +1,6 @@
 {
   imports = [
+    ./dev
     ./gnome.nix
     ./lanzaboote.nix
     ./nvidia.nix
